@@ -1,9 +1,9 @@
 {
-  "link" : "",
-  "name" : "ExtensionName",
+  "link" : "https://github.com/OliverBroadbent/TileEntityInfo",
+  "name" : "TileEntityInfo",
   "version" : 1,
-  "author" : "",
-  "description" : "",
+  "author" : "Broadbent",
+  "description" : "Displays icons, names, and tag descriptions for tile entities.",
   "editions" : ["JAVA", "BEDROCK", "CONSOLE"],
   "extension_types" : ["NBT_EDITOR_STYLE"],
   "tags" : []
