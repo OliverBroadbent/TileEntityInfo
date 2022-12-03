@@ -739,6 +739,7 @@ function TileEntityInfo.styler:MobHead(tileEntity, context)
             elseif(skull.value == 3) then skullType = "Steve"
             elseif(skull.value == 4) then skullType = "Creeper"
             elseif(skull.value == 5) then skullType = "Ender Dragon"
+            elseif(skull.value == 6) then skullType = "Piglin"
             end
 
             if(skullType ~= nil) then
