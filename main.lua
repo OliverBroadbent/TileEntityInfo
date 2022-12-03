@@ -968,6 +968,30 @@ function TileEntityInfo.styler:SoulCampfire(tileEntity, context)
     end
 end
 
+--[[ CHISELED BOOKSHELF - AWAITING DATABASE ENTRY
+
+function TileEntityInfo.styler:ChiseledBookshelf(tileEntity, context)
+
+    if(context.edition == EDITION.JAVA) then
+
+        if(tileEntity:contains("Items", TYPE.LIST, TYPE.COMPOUND)) then
+            local books = tileEntity.lastFound.childCount
+
+            if(books == 1) then
+                tileEntity.info.state = books .. " Book"
+                tileEntity.info.iconPath = "ChiseledBookshelf/" .. books
+            elseif(books > 1 and books <= 6) then
+                tileEntity.info.iconPath = "ChiseledBookshelf/" .. books
+                tileEntity.info.state = books .. " Books"
+            end
+        end
+
+    elseif(context.edition == EDITION.BEDROCK) then
+    end
+end
+
+]]
+
 -- FINALIZE
 
 function TileEntityInfo.styler:BuildLabel(tileEntity, context)
