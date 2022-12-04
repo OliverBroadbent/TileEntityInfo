@@ -972,7 +972,7 @@ end
 
 function TileEntityInfo.styler:ChiseledBookshelf(tileEntity, context)
 
-    if(context.edition == EDITION.JAVA) then
+    if(context.edition == EDITION.JAVA or context.edition == EDITION.BEDROCK) then
 
         if(tileEntity:contains("Items", TYPE.LIST, TYPE.COMPOUND)) then
             local books = tileEntity.lastFound.childCount
@@ -985,8 +985,6 @@ function TileEntityInfo.styler:ChiseledBookshelf(tileEntity, context)
                 tileEntity.info.state = books .. " Books"
             end
         end
-
-    elseif(context.edition == EDITION.BEDROCK) then
     end
 end
 
