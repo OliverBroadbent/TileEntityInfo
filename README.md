@@ -1,4 +1,4 @@
-# TileEntityInfo
+# Tile Entity Info
 
 Provides helpful icons, names, and descriptions for tile entities to make edits and navigation less hassle :)
 
