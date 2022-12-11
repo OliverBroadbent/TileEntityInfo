@@ -8,19 +8,25 @@ TileEntityInfo = {
 -- CUSTOM FUNCTIONS
 
 function TileEntityInfo.styler:ticksToTime(ticks)
-    local timeString = ""
+    local text = ""
 
     local secs = ticks/20
     local mins = (math.floor(secs))//60
     local hours = mins//60
     local days = hours//24
 
-    if(days > 0) then timeString = timeString .. tostring(days) .. " days, " end
-    if(hours > 0) then timeString = timeString .. tostring(hours%24) .. " hours, " end
-    if(mins > 0) then timeString = timeString .. tostring(mins%60) .. " minutes, " end
-    if(secs > 0) then timeString = timeString .. string.gsub(string.format("%.1f", math.abs(secs%60)), "%.0", "") .. " seconds" end
+    if(days > 0) then text = text .. tostring(days) .. (days == 1 and " day, " or " days, ") end
+    if(hours > 0) then text = text .. tostring(hours%24) .. (hours%24 == 1 and " hour, " or " hours, ") end
+    if(mins > 0) then text = text .. tostring(mins%60) .. (mins%60 == 1 and " minute, " or " minutes, ") end
+    if(secs > 0) then
+        local secs_str = string.gsub(string.format("%.2f", math.abs(secs%60)), "0*$", "")
+        if tonumber(secs_str) == math.floor(secs_str) then
+            secs_str = string.gsub(secs_str, "%.", "")
+        end
+        text = text .. secs_str .. (secs%60 <= 1 and " second" or " seconds")
+    end
 
-    return timeString
+    return text
 end
 
 function TileEntityInfo.styler:getCustomNameJava(tileEntity)
