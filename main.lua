@@ -974,27 +974,100 @@ function TileEntityInfo.styler:SoulCampfire(tileEntity, context)
     end
 end
 
---[[ CHISELED BOOKSHELF - AWAITING DATABASE ENTRY
+-- 1.20
 
 function TileEntityInfo.styler:ChiseledBookshelf(tileEntity, context)
 
-    if(context.edition == EDITION.JAVA or context.edition == EDITION.BEDROCK) then
+    if(context.edition == EDITION.JAVA) then
 
         if(tileEntity:contains("Items", TYPE.LIST, TYPE.COMPOUND)) then
-            local books = tileEntity.lastFound.childCount
+            local items = tileEntity.lastFound.childCount
 
-            if(books == 1) then
-                tileEntity.info.state = books .. " Book"
-                tileEntity.info.iconPath = "ChiseledBookshelf/" .. books
-            elseif(books > 1 and books <= 6) then
-                tileEntity.info.iconPath = "ChiseledBookshelf/" .. books
-                tileEntity.info.state = books .. " Books"
+            if(items == 1) then
+                tileEntity.info.state = items .. " Book"
+                tileEntity.info.iconPath = "ChiseledBookshelf/" .. items
+            elseif(items > 1 and items <= 6) then
+                tileEntity.info.iconPath = "ChiseledBookshelf/" .. items
+                tileEntity.info.state = items .. " Books"
+            end
+        end
+
+    elseif(context.edition == EDITION.BEDROCK) then
+
+        if(tileEntity:contains("Items", TYPE.LIST, TYPE.COMPOUND)) then
+            local items = tileEntity.lastFound
+            local itemCount = 0
+
+            for i=0, items.childCount-1 do
+                local item = items:child(i)
+
+                if(item:contains("Count", TYPE.BYTE) and item.lastFound.value > 0) then itemCount = itemCount+1 end
+            end
+
+            if(itemCount == 1) then
+                tileEntity.info.state = itemCount .. " Book"
+                tileEntity.info.iconPath = "ChiseledBookshelf/" .. itemCount
+            elseif(itemCount > 1 and itemCount <= 6) then
+                tileEntity.info.iconPath = "ChiseledBookshelf/" .. itemCount
+                tileEntity.info.state = itemCount .. " Books"
             end
         end
     end
 end
 
-]]
+function TileEntityInfo.styler:BrushableBlock(tileEntity, context)
+
+    if(context.edition == EDITION.BEDROCK) then
+
+        if(tileEntity:contains("type", TYPE.STRING)) then
+            local Type = tileEntity.lastFound.value
+            local block = ""
+
+            if(Type == "minecraft:suspicious_sand") then block = "Sand"
+            elseif(Type == "minecraft:suspicious_gravel") then block = "Gravel"
+            end
+
+            if(block ~= "") then
+                tileEntity.info.baseName = "Suspicious " .. block
+                tileEntity.info.iconPath = "BrushableBlock/" .. block
+            end
+        end
+
+        if(tileEntity:contains("brush_direction", TYPE.BYTE)) then
+            local directionIndex = tileEntity.lastFound.value
+            local direction = ""
+
+            if(directionIndex == 0) then direction = "Down"
+            elseif(directionIndex == 1) then direction = "Up"
+            elseif(directionIndex == 2) then direction = "North"
+            elseif(directionIndex == 3) then direction = "South"
+            elseif(directionIndex == 4) then direction = "West"
+            elseif(directionIndex == 5) then direction = "East"
+            elseif(directionIndex == 6) then direction = "Inactive"
+            end
+
+            if(direction ~= "") then
+                Style:setLabel(tileEntity.lastFound, direction)
+            end
+        end
+    end
+end
+
+function TileEntityInfo.styler:DecoratedPot(tileEntity, context)
+
+    if(tileEntity:contains("sherds", TYPE.LIST, TYPE.STRING)) then
+        local sherds = tileEntity.lastFound
+        for i=0, sherds.childCount-1 do
+            local sherd = sherds:child(i).value
+            
+            if(sherd == "") then sherd = "minecraft:brick" end
+            if(sherd:find("^minecraft:")) then sherd = sherd:sub(11) end
+            sherd = string.gsub(sherd, "_pottery_sherd", "")
+
+            Style:setIcon(sherds:child(i), "TileEntityInfo/images/DecoratedPot/" .. sherd .. ".png")
+        end
+    end
+end
 
 -- FINALIZE
 
