@@ -64,6 +64,107 @@ function TileEntityInfo.styler:getCustomNameJava(tileEntity)
     return ""
 end
 
+function TileEntityInfo.styler:colorToString(color)
+    if(type(color) == "string") then
+        if(color == "white") then color = 0 --"White"
+        elseif(color == "orange") then color = 1 -- "Orange"
+        elseif(color == "magenta") then color = 2 -- "Magenta"
+        elseif(color == "light_blue") then color = 3 -- "Light Blue"
+        elseif(color == "yellow") then color = 4 -- "Yellow"
+        elseif(color == "lime") then color = 5 -- "Lime"
+        elseif(color == "pink") then color = 6 -- "Pink"
+        elseif(color == "gray") then color = 7 -- "Gray"
+        elseif(color == "light_gray") then color = 8 -- "Light Gray"
+        elseif(color == "cyan") then color = 9 -- "Cyan"
+        elseif(color == "purple") then color = 10 -- "Purple"
+        elseif(color == "blue") then color = 11 -- "Blue"
+        elseif(color == "brown") then color = 12 -- "Brown"
+        elseif(color == "green") then color = 13 -- "Green"
+        elseif(color == "red") then color = 14 -- "Red"
+        elseif(color == "black") then color = 15 -- "Black"
+        end
+    end
+
+    local colors = {
+        {
+            name = "White",
+            qtColor = "white"
+        },{
+            name = "Orange",
+            qtColor = "orange"
+        },{
+            name = "Magenta",
+            qtColor = "magenta"
+        },{
+            name = "Light Blue",
+            qtColor = "lightblue"
+        },{
+            name = "Yellow",
+            qtColor = "yellow"
+        },{
+            name = "Lime",
+            qtColor = "lime"
+        },{
+            name = "Pink",
+            qtColor = "pink"
+        },{
+            name = "Gray",
+            qtColor = "gray"
+        },{
+            name = "Light Gray",
+            qtColor = "lightgray"
+        },{
+            name = "Cyan",
+            qtColor = "cyan"
+        },{
+            name = "Purple",
+            qtColor = "purple"
+        },{
+            name = "Blue",
+            qtColor = "#2d32ff"
+        },{
+            name = "Brown",
+            qtColor = "burlywood"
+        },{
+            name = "Green",
+            qtColor = "green"
+        },{
+            name = "Red",
+            qtColor = "red"
+        },{
+            name = "Black",
+            qtColor = "black"
+        }
+    }
+
+    return colors[color+1]
+
+end
+
+function TileEntityInfo.styler:colorDecToId(color)
+    local colorId = -1
+
+    if(color == -986896) then colorId = 0 --"White"
+    elseif(color == -425955) then colorId = 1 -- "Orange"
+    elseif(color == -3715395) then colorId = 2 -- "Magenta"
+    elseif(color == -12930086) then colorId = 3 -- "Light Blue"
+    elseif(color == -75715) then colorId = 4 -- "Yellow"
+    elseif(color == -8337633) then colorId = 5 -- "Lime"
+    elseif(color == -816214) then colorId = 6 -- "Pink"
+    elseif(color == -12103854) then colorId = 7 -- "Gray"
+    elseif(color == -6447721) then colorId = 8 -- "Light Gray"
+    elseif(color == -15295332) then colorId = 9 -- "Cyan"
+    elseif(color == -7785800) then colorId = 10 -- "Purple"
+    elseif(color == -12827478) then colorId = 11 -- "Blue"
+    elseif(color == -8170446) then colorId = 12 -- "Brown"
+    elseif(color == -10585066) then colorId = 13 -- "Green"
+    elseif(color == -5231066) then colorId = 14 -- "Red"
+    elseif(color == -16777216) then colorId = 15 -- "Black"
+    end
+
+    return colorId
+end
+
 -- BASE TILE ENTITY
 
 function TileEntityInfo.styler:main(root, context)
@@ -898,6 +999,39 @@ function TileEntityInfo.styler:ShulkerBox(tileEntity, context)
     end
 end
 
+function TileEntityInfo.styler:Sign(tileEntity, context)
+        
+    if(context.edition == EDITION.BEDROCK) then
+
+        if(tileEntity:contains("FrontText", TYPE.COMPOUND)) then
+            local text = tileEntity.lastFound
+
+            if(text:contains("SignTextColor", TYPE.INT)) then
+
+                local color = self:colorToString(self:colorDecToId(text.lastFound.value))
+    
+                if(color ~= nil) then
+                    Style:setLabel(text.lastFound, color.name)
+                    Style:setLabelColor(text.lastFound, color.qtColor)
+                end
+            end
+        end
+
+        if(tileEntity:contains("BackText", TYPE.COMPOUND)) then
+            local text = tileEntity.lastFound
+
+            if(text:contains("SignTextColor", TYPE.INT)) then
+                local color = self:colorToString(self:colorDecToId(text.lastFound.value))
+    
+                if(color ~= nil) then
+                    Style:setLabel(text.lastFound, color.name)
+                    Style:setLabelColor(text.lastFound, color.qtColor)
+                end
+            end
+        end
+    end
+end
+
 function TileEntityInfo.styler:Smoker(tileEntity, context)
 
     if(context.edition == EDITION.JAVA or context.edition == EDITION.BEDROCK) then
@@ -1065,6 +1199,39 @@ function TileEntityInfo.styler:DecoratedPot(tileEntity, context)
             sherd = string.gsub(sherd, "_pottery_sherd", "")
 
             Style:setIcon(sherds:child(i), "TileEntityInfo/images/DecoratedPot/" .. sherd .. ".png")
+        end
+    end
+end
+
+function TileEntityInfo.styler:HangingSign(tileEntity, context)
+        
+    if(context.edition == EDITION.BEDROCK) then
+
+        if(tileEntity:contains("FrontText", TYPE.COMPOUND)) then
+            local text = tileEntity.lastFound
+
+            if(text:contains("SignTextColor", TYPE.INT)) then
+
+                local color = self:colorToString(self:colorDecToId(text.lastFound.value))
+    
+                if(color ~= nil) then
+                    Style:setLabel(text.lastFound, color.name)
+                    Style:setLabelColor(text.lastFound, color.qtColor)
+                end
+            end
+        end
+
+        if(tileEntity:contains("BackText", TYPE.COMPOUND)) then
+            local text = tileEntity.lastFound
+
+            if(text:contains("SignTextColor", TYPE.INT)) then
+                local color = self:colorToString(self:colorDecToId(text.lastFound.value))
+    
+                if(color ~= nil) then
+                    Style:setLabel(text.lastFound, color.name)
+                    Style:setLabelColor(text.lastFound, color.qtColor)
+                end
+            end
         end
     end
 end
