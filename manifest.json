@@ -1,7 +1,7 @@
 {
   "link" : "https://github.com/OliverBroadbent/TileEntityInfo",
   "name" : "Tile Entity Info",
-  "version" : "1.0.5",
+  "version" : "1.0.6",
   "author" : "Broadbent",
   "description" : "Displays icons, names, and tag descriptions for tile entities.",
   "editions" : ["JAVA", "BEDROCK", "CONSOLE"],
